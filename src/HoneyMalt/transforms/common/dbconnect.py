@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import mysql.connector
 from mysql.connector import errorcode
-from canari.config import config
+from ConfigParser import SafeConfigParser
 
 __author__ = 'catalyst256'
 __copyright__ = 'Copyright 2014, Honeymalt Project'
@@ -14,17 +14,12 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 def db_connect(host):
-  # Try to connect to host on specified port
-  # database = config['database/database']
-  # username = config['database/username']
-  # password = config['database/password']
-  # username = config['database/username']
-
-  database = 'kippo'
-  username = 'kippo'
-  password = 'Kippo-DB-pass'
+  conf = SafeConfigParser()
+  conf.read('HoneyMalt.conf')
+  database = conf.get('kippodb', 'database').strip('\'')
+  username = conf.get('kippodb', 'username').strip('\'')
+  password = conf.get('kippodb', 'password').strip('\'')
   
-
   config = {
     'user': username,
     'password': password,

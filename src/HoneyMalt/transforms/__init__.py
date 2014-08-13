@@ -11,6 +11,12 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
-    'kippoconnect',
+    'kipposearchip',
+    'kippofiles',
+    'kippoinput',
+    'kippogeoip',
+    'kippocreds',
+    'kipposessions',
+    'kippoip',
     'common'
 ]

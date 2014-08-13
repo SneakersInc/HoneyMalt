@@ -15,7 +15,8 @@ setup(
     },
     install_requires=[
         'canari >= 1.0',
-        'mysql_connector_python >= 1.2.2'
+        'mysql_connector_python >= 1.2.2',
+        'pygeoip >= 0.3.1'
     ],
     dependency_links=[
         # custom links for the install_requires

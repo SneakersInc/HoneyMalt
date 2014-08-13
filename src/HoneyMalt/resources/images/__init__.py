@@ -9,3 +9,7 @@ __version__ = '0.1'
 __maintainer__ = 'catalyst256'
 __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
+
+__all__ = [
+    'flags'
+]

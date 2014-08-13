@@ -20,10 +20,20 @@ __all__ = [
 class HoneymaltEntity(Entity):
     _namespace_ = 'HoneyMalt'
 
-#@EntityField(name='HoneyMalt.fieldN', propname='fieldN', displayname='Field N', matchingrule=MatchingRule.Loose)
-#@EntityField(name='HoneyMalt.field1', propname='field1', displayname='Field 1', type=EntityFieldType.Integer)
 class KippoHoneypot(HoneymaltEntity):
     pass
 
-class Database(HoneymaltEntity):
+class KippoLogin(HoneymaltEntity):
+    pass
+
+@EntityField(name='HoneyMalt.client', propname='client', displayname='Client')
+@EntityField(name='HoneyMalt.termsize', propname='termsize', displayname='Term Size')
+@EntityField(name='HoneyMalt.ipaddr', propname='ipaddr', displayname='IP Address')
+@EntityField(name='HoneyMalt.sensor', propname='sensor', displayname='Sensor')
+@EntityField(name='HoneyMalt.endtime', propname='endtime', displayname='End Time')
+@EntityField(name='HoneyMalt.starttime', propname='starttime', displayname='Start Time')
+class KippoSession(HoneymaltEntity):
+    pass
+
+class KippoInput(HoneymaltEntity):
     pass

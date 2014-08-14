@@ -11,6 +11,13 @@ The following python modules are also required:
 MySQL Python Connector (mysql_connector_python)  
 Python Geoip (pygeoip)**  
 
+**IMPORTANT**  
+If you are remotely connnecting to your kippo mysql instance you will need to allow remote connections. You can do this by running the following command:  
+
+`GRANT ALL ON kippo.* TO kippo@'IPADDR' IDENTIFIED BY 'Kippo-DB-Pass';`  
+
+You will need to change the *IPADDR* and *Kippo-DB-Pass* to match your requirements.
+
 To install the transform pack you need to do the following (make sure you have canari installed already and run Maltego at least once):
 
 clone this repo  

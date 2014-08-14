@@ -34,17 +34,20 @@ def dotransform(request, response, config):
   sess = request.value
   host = request.fields['kippoip']
   x = db_connect(host)
-  cursor = x.cursor()
-  query = ("select timestamp, url, `outfile` from downloads where session like %s")
-  cursor.execute(query, (sess,))
-  for timestamp, url, outfile in cursor:
-    e = URL(url)
-    e.url = url
-    e += Field('filetime', timestamp, displayname='Time Stamp')
-    e += Field('fileout', outfile, displayname='Success')
-    e += Field('kippoip', host, displayname='Kippo IP')
-    response += e
-  return response
+  try:
+    cursor = x.cursor()
+    query = ("select timestamp, url, `outfile` from downloads where session like %s")
+    cursor.execute(query, (sess,))
+    for timestamp, url, outfile in cursor:
+      e = URL(url)
+      e.url = url
+      e += Field('filetime', timestamp, displayname='Time Stamp')
+      e += Field('fileout', outfile, displayname='Success')
+      e += Field('kippoip', host, displayname='Kippo IP')
+      response += e
+    return response
+  except:
+    return response + UIMessage(x)
 
 def onterminate():
   cursor.close()

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from common.dbconnect import db_connect
-from common.entities import KippoSession, KippoLogin
+from common.entities import KippoHoneypot
+from canari.maltego.entities import IPv4Address
 from canari.maltego.message import Label, Field, UIMessage
 from canari.config import config
 from canari.framework import configure #, superuser
@@ -23,27 +24,23 @@ __all__ = [
 
 #@superuser
 @configure(
- label='HoneyMalt: Kippo Username/Password',
+ label='HoneyMalt: Kippo IPs',
  description='Connects to Kippo Honeypots via MYSQL db',
- uuids=[ 'HoneyMalt.v2.kippo_2_auth_attempts' ],
- inputs=[ ( 'HoneyMalt', KippoSession ) ],
+ uuids=[ 'HoneyMalt.v2.Connect_to_Kippo' ],
+ inputs=[ ( 'HoneyMalt', KippoHoneypot ) ],
  debug=False
 )
 def dotransform(request, response, config):
-  host = request.fields['kippoip']
-  k_id = request.value
+  host = request.value
   x = db_connect(host)
-  try:
-    cursor = x.cursor()
-    query = ("select username, password from auth where session like %s")
-    cursor.execute(query, (k_id, ))
-    for username, password in cursor:
-      e = KippoLogin('%s/%s' %(username, password))
-      e += Field('kippoip', host, displayname='Kippo IP')
-      response += e
-    return response
-  except:
-    return response + UIMessage(x)
+  cursor = x.cursor()
+  query = ("select ip from sessions")
+  cursor.execute(query)
+  for ip in cursor:
+    e = IPv4Address('%s' %(ip))
+    e += Field('kippoip', host, displayname='Kippo IP')
+    response += e
+  return response
 
 def onterminate():
   cursor.close()

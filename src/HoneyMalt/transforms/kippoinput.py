@@ -33,16 +33,19 @@ def dotransform(request, response, config):
   sess = request.value
   host = request.fields['kippoip']
   x = db_connect(host)
-  cursor = x.cursor()
-  query = ("select timestamp, success, input from input where session like %s")
-  cursor.execute(query, (sess,))
-  for timestamp, success, input in cursor:
-    e = KippoInput(input)
-    e += Field('inputtime', timestamp, displayname='Time Stamp')
-    e += Field('inputsuc', success, displayname='Success')
-    e += Field('kippoip', host, displayname='Kippo IP')
-    response += e
-  return response
+  try:
+    cursor = x.cursor()
+    query = ("select timestamp, success, input from input where session like %s")
+    cursor.execute(query, (sess,))
+    for timestamp, success, input in cursor:
+      e = KippoInput(input)
+      e += Field('inputtime', timestamp, displayname='Time Stamp')
+      e += Field('inputsuc', success, displayname='Success')
+      e += Field('kippoip', host, displayname='Kippo IP')
+      response += e
+    return response
+  except:
+    return response + UIMessage(x)
 
 def onterminate():
   cursor.close()

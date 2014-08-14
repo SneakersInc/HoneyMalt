@@ -34,20 +34,23 @@ def dotransform(request, response, config):
   host = request.fields['kippoip']
   ip = request.value
   x = db_connect(host)
-  cursor = x.cursor()
-  query = ("select * from sessions where ip like %s")
-  cursor.execute(query, (ip, ))
-  for (id, starttime, endtime, sensor, ip, termsize, client) in cursor:
-    e = KippoSession('%s' %(id))
-    e.starttime = ('%s' %(starttime))
-    e.endtime = ('%s' %(endtime))
-    e.sensor = ('%s' %(sensor))
-    e.ipaddr =  ('%s' %(ip))
-    e.termsize =  ('%s' %(termsize))
-    e.client = ('%s' %(client))
-    e += Field('kippoip', host, displayname='Kippo IP')
-    response += e
-  return response
+  try:
+    cursor = x.cursor()
+    query = ("select * from sessions where ip like %s")
+    cursor.execute(query, (ip, ))
+    for (id, starttime, endtime, sensor, ip, termsize, client) in cursor:
+      e = KippoSession('%s' %(id))
+      e.starttime = ('%s' %(starttime))
+      e.endtime = ('%s' %(endtime))
+      e.sensor = ('%s' %(sensor))
+      e.ipaddr =  ('%s' %(ip))
+      e.termsize =  ('%s' %(termsize))
+      e.client = ('%s' %(client))
+      e += Field('kippoip', host, displayname='Kippo IP')
+      response += e
+    return response
+  except:
+    return response + UIMessage(x)
 
 def onterminate():
   cursor.close()

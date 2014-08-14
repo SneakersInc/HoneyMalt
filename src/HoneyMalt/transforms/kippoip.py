@@ -33,14 +33,18 @@ __all__ = [
 def dotransform(request, response, config):
   host = request.value
   x = db_connect(host)
-  cursor = x.cursor()
-  query = ("select ip from sessions")
-  cursor.execute(query)
-  for ip in cursor:
-    e = IPv4Address('%s' %(ip))
-    e += Field('kippoip', host, displayname='Kippo IP')
-    response += e
-  return response
+  try:
+    cursor = x.cursor()
+    query = ("select ip from sessions")
+    cursor.execute(query)
+    for ip in cursor:
+      e = IPv4Address('%s' %(ip))
+      e += Field('kippoip', host, displayname='Kippo IP')
+      response += e
+    return response
+  except:
+    return response + UIMessage(x)
+
 
 def onterminate():
   cursor.close()

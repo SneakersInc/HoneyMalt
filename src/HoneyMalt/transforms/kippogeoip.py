@@ -4,6 +4,7 @@ import pygeoip
 import os
 from canari.maltego.message import Field, UIMessage, Label
 from canari.maltego.entities import IPv4Address, Image
+from ConfigParser import SafeConfigParser
 from canari.framework import configure #, superuser
 
 __author__ = 'catalyst256'
@@ -29,11 +30,16 @@ __all__ = [
     debug=False
 )
 def dotransform(request, response, config):
+  
+  conf = SafeConfigParser()
+  conf.read('HoneyMalt.conf')
+  geodbpath = conf.get('geoip', 'geoip_db').strip('\'')
+
   ip = request.value
   host = request.fields['kippoip']
-  if not os.path.exists('/opt/geoip/GeoLiteCity.dat'): 
+  if not os.path.exists(geodbpath): 
     return response + UIMessage('Need local install of MaxMinds Geo IP database')
-  gi = pygeoip.GeoIP('/opt/geoip/GeoLiteCity.dat')
+  gi = pygeoip.GeoIP(geodbpath)
   rec = gi.record_by_addr(ip)
   country = rec['country_name']
   ccode = rec['country_code'].lower()

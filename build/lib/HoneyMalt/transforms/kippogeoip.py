@@ -36,7 +36,7 @@ def dotransform(request, response, config):
   geodbpath = conf.get('geoip', 'geoip_db').strip('\'')
 
   ip = request.value
-  host = request.fields['kippodatabase']
+  host = request.fields['kippoip']
   if not os.path.exists(geodbpath): 
     return response + UIMessage('Need local install of MaxMinds Geo IP database')
   gi = pygeoip.GeoIP(geodbpath)

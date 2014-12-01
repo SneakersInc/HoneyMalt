@@ -17,14 +17,11 @@ __all__ = [
     'MyHoneymaltEntity'
 ]
 
-
 class HoneymaltEntity(Entity):
     _namespace_ = 'HoneyMalt'
 
-
 class KippoHoneypot(HoneymaltEntity):
     pass
-
 
 class KippoLogin(HoneymaltEntity):
     pass
@@ -38,10 +35,5 @@ class KippoLogin(HoneymaltEntity):
 class KippoSession(HoneymaltEntity):
     pass
 
-
 class KippoInput(HoneymaltEntity):
-    pass
-
-
-class KippoDatabase(HoneymaltEntity):
     pass

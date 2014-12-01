@@ -1,0 +1,29 @@
+//Welcome to Maltego Machines!
+
+//Each machine starts with a statement like this
+machine("HoneyMalt.HoneyMalt-Kippo", 
+    displayName:"HoneyMalt - Kippo (auto)", 
+    author:"catalyst256",
+    description: "Machine to automatically populate the graph from the Kippo MYSQL database") {
+
+    //A Timer Machine has a function like this, indicating how often it should run in seconds
+    onTimer(15) {
+        //Put the sequence of transforms to run in here
+        run("HoneyMalt.v2.Connect_to_Kippo")
+        paths{ 
+            path{ 
+                run("HoneyMalt.v2.kippo_ip_2_geo")
+            }
+            path{
+                run("HoneyMalt.v2.Kippo_to_Session")
+                paths{
+                    run("HoneyMalt.v2.kippo_2_auth_attempts")
+                    run("HoneyMalt.v2.Kippo_2_Input")
+                    run("HoneyMalt.v2.Kippo_2_File")
+                }
+            }
+             
+        }
+    }
+
+}

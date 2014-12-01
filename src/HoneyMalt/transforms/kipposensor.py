@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 from common.dbconnect import db_connect
-from common.entities import KippoSession
-from canari.maltego.entities import IPv4Address
+from common.entities import KippoHoneypot, KippoDatabase
 from canari.maltego.message import Field, UIMessage
 from canari.framework import configure
 
@@ -22,31 +21,24 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='HoneyMalt: Kippo Sessions',
+    label='HoneyMalt: Kippo Sensors',
     description='Connects to Kippo Honeypots via MYSQL db',
-    uuids=['HoneyMalt.v2.Kippo_to_Session'],
-    inputs=[('HoneyMalt', IPv4Address)],
-    debug=False
+    uuids=['HoneyMalt.v2.Get_Kippo_Sensors'],
+    inputs=[('HoneyMalt', KippoDatabase)],
+    debug=True
 )
 def dotransform(request, response):
-    host = request.fields['kippodatabase']
-    ip = request.value
+    host = request.value
     x = db_connect(host)
     try:
         cursor = x.cursor()
-        query = "select * from sessions where ip like %s"
-        cursor.execute(query, (ip, ))
-        for (id, starttime, endtime, sensor, ip, termsize, client) in cursor:
-            e = KippoSession('%s' %(id))
-            e.starttime = ('%s' %(starttime))
-            e.endtime = ('%s' %(endtime))
-            e.sensor = ('%s' %(sensor))
-            e.ipaddr = ('%s' %(ip))
-            e.termsize = ('%s' %(termsize))
-            e.client = ('%s' %(client))
+        query = "select * from sensors"
+        cursor.execute(query)
+        for (id, ip) in cursor:
+            e = KippoHoneypot('%s' % ip)
             e += Field('kippodatabase', host, displayname='Kippo Database')
+            e += Field('kipposensorid', ('%s' % id), displayname='Kippo Sensor ID')
             response += e
         return response
     except Exception as e:
         return response + UIMessage(str(e))
-

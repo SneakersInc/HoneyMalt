@@ -53,7 +53,7 @@ docs/_build/
 # PyBuilder
 target/
 
-
+.idea/
 
 #Exclude conf files generated when canari package installed, not the main conf file though
 *.conf

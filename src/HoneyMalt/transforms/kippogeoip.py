@@ -43,7 +43,7 @@ def dotransform(request, response, config):
   rec = gi.record_by_addr(ip)
   country = rec['country_name']
   ccode = rec['country_code'].lower()
-  flag_path = 'http://flags.sneakersinc.net:8080/' + ccode + '.png'
+  flag_path = 'http://flags.sneakersinc.net/' + ccode + '.png'
   e = Image(country)
   e.url = (flag_path)
   e += Field('kippoip', host, displayname='Kippo IP')
